@@ -27,7 +27,7 @@ typedef float conjugrad_float_t;
 typedef double conjugrad_float_t;
 
 #define F0   0.0
-#define F001 0.0
+#define F001 0.01
 #define F02  0.2
 #define F05  0.5
 #define F08  0.8
