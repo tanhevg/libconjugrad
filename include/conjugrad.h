@@ -47,6 +47,7 @@ typedef double conjugrad_float_t;
 typedef struct {
 	int max_iterations;
 	int max_linesearch;
+	int k;
 	conjugrad_float_t epsilon;	// Tolerance for convergence criterion
 	conjugrad_float_t ftol;		// Tolerance for line search sufficient decrease criterion
 	conjugrad_float_t wolfe;	// Tolerance for line search curvature criterion

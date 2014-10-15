@@ -42,6 +42,8 @@ int conjugrad_gpu(
 	init_cg_mem_cuda(n);
 	int n_linesearch, n_iter = 0;
 	int ret = CONJUGRADERR_UNKNOWN;
+	conjugrad_float_t *k_last_fx = (conjugrad_float_t *)malloc(sizeof(conjugrad_float_t) * param->k);
+	conjugrad_float_t *check_fx = k_last_fx;
 
 
 	CHECK_ERR(cudaMemset(d_s, 0, sizeof(conjugrad_float_t) * n));
@@ -99,20 +101,34 @@ int conjugrad_gpu(
 			break;
 		}
 
+		int pos = n_iter % param->k;
+		check_fx = k_last_fx + pos;
+		
+		if (n_iter >= param->k) {
+			conjugrad_float_t rel_change = (*check_fx - *fx) / *fx;
+			if (rel_change < param->epsilon) {
+				ret = CONJUGRAD_SUCCESS;
+				break;
+			}
+		}
+
+		*check_fx = *fx;
+
 		n_iter++;
 		proc_progress(instance, d_x, d_g, *fx, xnorm, gnorm, alpha, n, n_iter, n_linesearch);
 
 		// convergence check
-		if (xnorm < F1) { xnorm = F1; }
-		if (gnorm / xnorm <= param->epsilon) {
-			ret = CONJUGRAD_SUCCESS;
-			break;
-		}
+		//if (xnorm < F1) { xnorm = F1; }
+		//if (gnorm / xnorm <= 1e-3f) {
+		//	ret = CONJUGRAD_SUCCESS;
+		//	break;
+		//}
 	}
 	
 	conjugrad_exit:
 	
 	destroy_cg_mem_cuda();
+	free(k_last_fx);
 	return ret;
 }
 

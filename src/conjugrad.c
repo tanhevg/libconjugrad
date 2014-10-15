@@ -28,6 +28,8 @@ int conjugrad(
 	conjugrad_float_t *s = conjugrad_malloc(n);
 	int n_linesearch, n_iter = 0;
 	int ret = CONJUGRADERR_UNKNOWN;
+	conjugrad_float_t *k_last_fx = (conjugrad_float_t *)malloc(sizeof(conjugrad_float_t) * param->k);
+	conjugrad_float_t *check_fx = k_last_fx;
 
 	vec0(s, n);
 
@@ -81,22 +83,35 @@ int conjugrad(
 			break;
 		}
 
+		int pos = n_iter % param->k;
+		check_fx = k_last_fx + pos;
+
+		if (n_iter >= param->k) {
+			conjugrad_float_t rel_change = (*check_fx - *fx) / *fx;
+			if (rel_change < param->epsilon) {
+				ret = CONJUGRAD_SUCCESS;
+				break;
+			}
+		}
+
+		*check_fx = *fx;
+
 		n_iter++;
 		proc_progress(instance, x, g, *fx, xnorm, gnorm, alpha, n, n_iter, n_linesearch);
 
 		// convergence check
-		if(xnorm < 1.0) { xnorm = 1.0; }
-		if(gnorm / xnorm <= param->epsilon) {
-			ret = CONJUGRAD_SUCCESS;
-			break;
-		}
-
+		//if(xnorm < 1.0) { xnorm = 1.0; }
+		//if(gnorm / xnorm <= param->epsilon) {
+		//	ret = CONJUGRAD_SUCCESS;
+		//	break;
+		//}
 	}
 
 	conjugrad_exit:	
 
 	conjugrad_free(g);
 	conjugrad_free(s);
+	free(k_last_fx);
 	return ret;
 }
 
