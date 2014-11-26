@@ -87,7 +87,7 @@ int conjugrad(
 		check_fx = k_last_fx + pos;
 
 		if (n_iter >= param->k) {
-			conjugrad_float_t rel_change = (*check_fx - *fx) / *fx;
+			conjugrad_float_t rel_change = (*check_fx - *fx) / *check_fx;
 			if (rel_change < param->epsilon) {
 				ret = CONJUGRAD_SUCCESS;
 				break;
