@@ -38,7 +38,7 @@ int conjugrad(
 	gnorm = vecnorm(g, n);
 	xnorm = vecnorm(x, n);
 
-	if(gnorm / xnorm <= param->epsilon) {
+	if(gnorm <= param->min_gnorm || gnorm / xnorm <= param->epsilon) {
 		ret = CONJUGRAD_ALREADY_MINIMIZED;
 		goto conjugrad_exit;
 	}
@@ -124,6 +124,7 @@ conjugrad_parameter_t *conjugrad_init() {
 	out->ftol = 1e-4;
 	out->wolfe = 0.1;
 	out->alpha_mul = 0.5;
+	out->min_gnorm = 1e-8;
 
 	return out;
 }

@@ -52,6 +52,7 @@ typedef struct {
 	conjugrad_float_t ftol;		// Tolerance for line search sufficient decrease criterion
 	conjugrad_float_t wolfe;	// Tolerance for line search curvature criterion
 	conjugrad_float_t alpha_mul;	// Line search backtracking factor in range (0,1)
+	conjugrad_float_t min_gnorm;    // Value for initial gnorm that will be considered already minimized
 } conjugrad_parameter_t;
 
 
