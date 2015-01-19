@@ -1,3 +1,5 @@
+#include <stdbool.h>
+
 #ifndef __LIBCONJ_H__
 #define __LIBCONJ_H__
 
@@ -112,6 +114,18 @@ int linesearch(
 conjugrad_parameter_t *conjugrad_init();
 conjugrad_float_t *conjugrad_malloc(int n);
 void conjugrad_free(conjugrad_float_t *x);
+
+
+void conjugrad_debug_numdiff(
+	int n,
+	conjugrad_float_t *x0,
+	int i,
+	conjugrad_evaluate_t proc_evaluate,
+	void *instance,
+	conjugrad_float_t epsilon,
+	bool have_extra_i,
+	int extra_i
+);
 
 
 enum {

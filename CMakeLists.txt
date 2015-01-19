@@ -11,7 +11,7 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 
 include_directories("${PROJECT_SOURCE_DIR}/include")
 
-set(SOURCES src/conjugrad.c)
+set(SOURCES src/conjugrad.c src/debug.c)
 
 if(NOT DEFINED WITH_SIMD)
 	set(WITH_SIMD ansi)
