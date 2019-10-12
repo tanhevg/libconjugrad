@@ -1,9 +1,10 @@
-cmake_minimum_required(VERSION 2.8)
-project(libconjugrad)
+cmake_minimum_required(VERSION 3.8)
+include(CheckLanguage)
 
+project(libconjugrad)
 set(LIBCONJUGRAD_MAJOR_VERSION 0)
 set(LIBCONJUGRAD_MINOR_VERSION 0)
-set(LIBCONJUGRAD_PATCH_VERSION 3)
+set(LIBCONJUGRAD_PATCH_VERSION 4)
 set(LIBCONJUGRAD_VERSION ${LIBCONJUGRAD_MAJOR_VERSION}.${LIBCONJUGRAD_MINOR_VERSION}.${LIBCONJUGRAD_PATCH_VERSION})
 
 if(CMAKE_VERSION VERSION_GREATER 2.8.11)
@@ -40,19 +41,17 @@ set(BUILD_SHARED_LIBS OFF)
 
 if(WITH_CUDA)
 	find_package(CUDA)
-endif(WITH_CUDA)
-if(CUDA_FOUND)
+	check_language(CUDA)
+	enable_language(CUDA)
+
 	#list(APPEND SOURCES src/conjugrad_cuda.c src/help_functions.cu src/conjugrad_kernels.cu)
 	list(APPEND SOURCES src/conjugrad_cuda.c src/conjugrad_kernels.cu)
-	set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS}; -rdc=true -Xptxas -v -lineinfo)
-	include_directories(${CUDA_INCLUDE_DIRS})
-	cuda_add_library(conjugrad ${SOURCES})
-else(CUDA_FOUND)
-	add_library(conjugrad ${SOURCES})
+
+	include_directories(${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
 endif(CUDA_FOUND)
 
-#add_library(conjugrad SHARED ${SOURCES})
-#add_library(conjugrad ${SOURCES})
+add_library(conjugrad ${SOURCES})
+
 install(TARGETS conjugrad DESTINATION lib)
 
 add_executable(rosenbrock EXCLUDE_FROM_ALL samples/rosenbrock.c)
