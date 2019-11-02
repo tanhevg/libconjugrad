@@ -48,7 +48,7 @@ if(WITH_CUDA)
 	list(APPEND SOURCES src/conjugrad_cuda.c src/conjugrad_kernels.cu)
 
 	include_directories(${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
-endif(CUDA_FOUND)
+endif(WITH_CUDA)
 
 add_library(conjugrad ${SOURCES})
 
