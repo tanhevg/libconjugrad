@@ -22,7 +22,7 @@ __device__ void warp_reduction(
 __global__ void sum_reduction(
 	conjugrad_float_t *d_in,
 	conjugrad_float_t *d_out,
-	int nvar
+    unsigned long nvar
 ) {
 	int i = threadIdx.x;
 
@@ -73,7 +73,7 @@ __global__ void vecdot_inter(
 	conjugrad_float_t *d_x,
 	conjugrad_float_t *d_y,
 	conjugrad_float_t *d_vecdot_inter,
-	int nvar
+    unsigned long nvar
 ) {
 	int i = blockIdx.x * blockDim.x + threadIdx.x;
 	const int offset = blockDim.x * gridDim.x;
@@ -99,7 +99,7 @@ __global__ void update_s(
 	conjugrad_float_t *d_old_s,
 	conjugrad_float_t *d_g,
 	conjugrad_float_t beta,
-	int nvar
+    unsigned long nvar
 ) {
 	int i = blockIdx.x * blockDim.x + threadIdx.x;
 	const int offset = blockDim.x * gridDim.x;
@@ -113,7 +113,7 @@ __global__ void update_s(
 __global__ void initialize_s(
 	conjugrad_float_t *d_s,
 	conjugrad_float_t *d_g,
-	int nvar) {
+    unsigned long nvar) {
 	int i = blockIdx.x * blockDim.x + threadIdx.x;
 	const int offset = blockDim.x * gridDim.x;
 
@@ -128,7 +128,7 @@ __global__ void update_x(
 	conjugrad_float_t *d_s,
 	conjugrad_float_t alpha,
 	conjugrad_float_t prevalpha,
-	int nvar) {
+    unsigned long nvar) {
 	int i = blockIdx.x * blockDim.x + threadIdx.x;
 	const int offset = blockDim.x * gridDim.x;
 
@@ -144,7 +144,7 @@ extern "C" {
 void vecnorm_gpu(
 	conjugrad_float_t *d_x,
 	conjugrad_float_t *res,
-	int nvar
+    unsigned long nvar
 ) {
 	unsigned int nblocks = 128;
 	unsigned int nthreads = 256;
@@ -178,7 +178,7 @@ void vecdot_gpu(
 	conjugrad_float_t *d_x,
 	conjugrad_float_t *d_y,
 	conjugrad_float_t *res,
-	int nvar
+    unsigned long nvar
 ) {
 	unsigned int nblocks = 128;
 	unsigned int nthreads = 256;
@@ -207,7 +207,7 @@ void vecdot_gpu(
 void initialize_s_gpu(
 	conjugrad_float_t *d_s,
 	conjugrad_float_t *d_g,
-	int nvar
+    unsigned long nvar
 ) {
 	int nblocks = 128;
 	int nthreads = 256;
@@ -221,7 +221,7 @@ void update_s_gpu(
 	conjugrad_float_t *d_old_s,
 	conjugrad_float_t *d_g,
 	conjugrad_float_t beta,
-	int nvar
+    unsigned long nvar
 ) {
 	unsigned int nblocks = 128;
 	unsigned int nthreads = 256;
@@ -236,7 +236,7 @@ void update_x_gpu(
 	conjugrad_float_t *d_s,
 	conjugrad_float_t alpha,
 	conjugrad_float_t prevalpha,
-	int nvar
+    unsigned long nvar
 ) {
 	int nblocks = 128;
 	int nthreads = 256;

@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <stddef.h>
 
 #ifndef __LIBCONJ_H__
 #define __LIBCONJ_H__
@@ -63,7 +64,7 @@ typedef conjugrad_float_t (*conjugrad_evaluate_t)(
 	void *instance,
 	const conjugrad_float_t *x,
 	conjugrad_float_t *g,
-	const int n
+	const unsigned long n
 );
 
 typedef int (*conjugrad_progress_t)(
@@ -80,7 +81,7 @@ typedef int (*conjugrad_progress_t)(
 );
 
 int conjugrad_gpu(
-	int n,
+    unsigned long n,
 	conjugrad_float_t *d_x,
 	conjugrad_float_t *d_fx,
 	conjugrad_evaluate_t proc_evaluate,
@@ -90,7 +91,7 @@ int conjugrad_gpu(
 );
 
 int conjugrad(
-	int n,
+	unsigned long n,
 	conjugrad_float_t *x,
 	conjugrad_float_t *fx,
 	conjugrad_evaluate_t proc_evaluate,
@@ -100,7 +101,7 @@ int conjugrad(
 );
 
 int linesearch(
-	int n,
+	unsigned long n,
 	conjugrad_float_t *x,
 	conjugrad_float_t *fx,
 	conjugrad_float_t *g,
@@ -112,7 +113,7 @@ int linesearch(
 );
 
 conjugrad_parameter_t *conjugrad_init();
-conjugrad_float_t *conjugrad_malloc(int n);
+conjugrad_float_t *conjugrad_malloc(size_t n);
 void conjugrad_free(conjugrad_float_t *x);
 
 

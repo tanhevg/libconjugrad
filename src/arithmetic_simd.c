@@ -59,22 +59,22 @@ typedef __m256d simd;
 #endif // CONJUGRAD_SIMD
 #endif // CONJUGRAD_FLOAT
 
-void vec0(conjugrad_float_t *dst, int n) {
+void vec0(conjugrad_float_t *dst, size_t n) {
 	memset(dst, 0, sizeof(conjugrad_float_t) * n);
 }
 
-void veccpy(conjugrad_float_t *dst, conjugrad_float_t *src, int n) {
+void veccpy(conjugrad_float_t *dst, conjugrad_float_t *src, size_t n) {
 	memcpy(dst, src, sizeof(conjugrad_float_t) * n);
 }
 
-void vecimulc(conjugrad_float_t *dst, conjugrad_float_t f, int n) {
+void vecimulc(conjugrad_float_t *dst, conjugrad_float_t f, size_t n) {
 	simd _dst;
 	simd _f = simdset1(f);
 
 	fval *pdst = (fval *)dst;
 
-	int m = (n / STRIDE) * STRIDE;
-	for(int i = 0; i < m; i+= STRIDE) {
+    size_t m = (n / STRIDE) * STRIDE;
+	for(size_t i = 0; i < m; i+= STRIDE) {
 		_dst = simdload(pdst);
 		_dst = simdmul(_dst, _f);
 		simdstore(pdst, _dst);
@@ -82,12 +82,12 @@ void vecimulc(conjugrad_float_t *dst, conjugrad_float_t f, int n) {
 		pdst += STRIDE;
 	}
 
-	for(int i = m; i < n; i++) {
+	for(size_t i = m; i < n; i++) {
 		dst[i] *= f;
 	}
 }
 
-void vecifma(conjugrad_float_t *dst, conjugrad_float_t *src, conjugrad_float_t f, int n) {
+void vecifma(conjugrad_float_t *dst, conjugrad_float_t *src, conjugrad_float_t f, size_t n) {
 	simd _dst;
 	simd _src;
 
@@ -97,7 +97,7 @@ void vecifma(conjugrad_float_t *dst, conjugrad_float_t *src, conjugrad_float_t f
 	fval *psrc = (fval *)src;
 
 	int m = (n / STRIDE) * STRIDE;
-	for(int i = 0; i < m; i += STRIDE) {
+	for(size_t i = 0; i < m; i += STRIDE) {
 		_dst = simdload(pdst);
 		_src = simdload(psrc);
 		_src = simdmul(_src, _f);
@@ -108,12 +108,12 @@ void vecifma(conjugrad_float_t *dst, conjugrad_float_t *src, conjugrad_float_t f
 		psrc += STRIDE;
 	}
 
-	for(int i = m; i < n; i++) {
+	for(size_t i = m; i < n; i++) {
 		dst[i] += f * src[i];
 	}
 }
 
-void vecsfms(conjugrad_float_t *dst, conjugrad_float_t *a, conjugrad_float_t f, conjugrad_float_t *b, int n) {
+void vecsfms(conjugrad_float_t *dst, conjugrad_float_t *a, conjugrad_float_t f, conjugrad_float_t *b, size_t n) {
 	simd _dst;
 	simd _a;
 	simd _b;
@@ -125,7 +125,7 @@ void vecsfms(conjugrad_float_t *dst, conjugrad_float_t *a, conjugrad_float_t f, 
 	fval *pb = (fval *)b;
 
 	int m = (n / STRIDE) * STRIDE;
-	for(int i = 0; i < m; i += STRIDE) {
+	for(size_t i = 0; i < m; i += STRIDE) {
 		_a = simdload(pa);
 		_b = simdload(pb);
 		_dst = simdmul(_b, _f);
@@ -137,21 +137,21 @@ void vecsfms(conjugrad_float_t *dst, conjugrad_float_t *a, conjugrad_float_t f, 
 		pb += STRIDE;
 	}
 
-	for(int i = m; i < n; i++) {
+	for(size_t i = m; i < n; i++) {
 		dst[i] = a[i] + f * b[i];
 	}
 
 }
 
-conjugrad_float_t vecnorm(conjugrad_float_t *v, int n) {
+conjugrad_float_t vecnorm(conjugrad_float_t *v, size_t n) {
 
 	simd _sum = simdset1(.0f);	
 	simd _v;
 
 
 	fval *pv = (fval *)v;
-	int m = (n / STRIDE) * STRIDE;
-	for(int i = 0; i < m; i += STRIDE) {
+    size_t m = (n / STRIDE) * STRIDE;
+	for(size_t i = 0; i < m; i += STRIDE) {
 		_v = simdload(pv);
 		_v = simdmul(_v, _v);
 		_sum = simdadd(_sum, _v);
@@ -162,26 +162,26 @@ conjugrad_float_t vecnorm(conjugrad_float_t *v, int n) {
 	simdstore(psum, _sum);
 
 	fval sum = .0f;
-	for(int i = 0; i < STRIDE; i++) {
+	for(size_t i = 0; i < STRIDE; i++) {
 		sum += psum[i];
 	}
 
-	for(int i = m; i < n; i++) {
+	for(size_t i = m; i < n; i++) {
 		sum += v[i] * v[i];
 	}
 
 	return sum;
 }
 
-conjugrad_float_t vecdot(conjugrad_float_t *v, conjugrad_float_t *w, int n) {
+conjugrad_float_t vecdot(conjugrad_float_t *v, conjugrad_float_t *w, size_t n) {
 	simd _sum = simdset1(.0f);	
 	simd _v;
 	simd _w;
 
 	fval *pv = (fval *)v;
 	fval *pw = (fval *)w;
-	int m = (n / STRIDE) * STRIDE;
-	for(int i = 0; i < m; i += STRIDE) {
+    size_t m = (n / STRIDE) * STRIDE;
+	for(size_t i = 0; i < m; i += STRIDE) {
 		_v = simdload(pv);
 		_w = simdload(pw);
 		_v = simdmul(_v, _w);
@@ -194,17 +194,17 @@ conjugrad_float_t vecdot(conjugrad_float_t *v, conjugrad_float_t *w, int n) {
 	simdstore(psum, _sum);
 
 	fval sum = .0f;
-	for(int i = 0; i < STRIDE; i++) {
+	for(size_t i = 0; i < STRIDE; i++) {
 		sum += psum[i];
 	}
-	for(int i = m; i < n; i++) {
+	for(size_t i = m; i < n; i++) {
 		sum += v[i] * w[i];
 	}
 
 	return sum;
 }
 
-conjugrad_float_t *vecalloc(int n) {
+conjugrad_float_t *vecalloc(size_t n) {
 	conjugrad_float_t *out;
 	posix_memalign((void **)&out, sizeof(conjugrad_float_t) * STRIDE, sizeof(conjugrad_float_t) * n);
 	return out;

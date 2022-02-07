@@ -7,12 +7,12 @@
 #include <stdbool.h>
 
 
-int init_cg_mem_cuda(int nvar);
+int init_cg_mem_cuda(unsigned long nvar);
 
 int destroy_cg_mem_cuda();
 
 int linesearch_gpu(
-	int n,
+	unsigned long n,
 	conjugrad_float_t *d_x,
 	conjugrad_float_t *fx,
 	conjugrad_float_t *d_g,
@@ -29,7 +29,7 @@ conjugrad_float_t *d_s;
 
 
 int conjugrad_gpu(
-	int n,
+	unsigned long n,
 	conjugrad_float_t *d_x,
 	conjugrad_float_t *fx,
 	conjugrad_evaluate_t proc_evaluate,
@@ -134,7 +134,7 @@ int conjugrad_gpu(
 
 
 int linesearch_gpu(
-	int n,
+	unsigned long n,
 	conjugrad_float_t *d_x,
 	conjugrad_float_t *fx,
 	conjugrad_float_t *d_g,
@@ -180,7 +180,7 @@ int linesearch_gpu(
 }
 
 
-int init_cg_mem_cuda(int nvar) {
+int init_cg_mem_cuda(unsigned long nvar) {
 	CHECK_ERR(cudaMalloc((void **) &d_g, sizeof(conjugrad_float_t) * nvar));
 	CHECK_ERR(cudaMalloc((void **) &d_s, sizeof(conjugrad_float_t) * nvar));
 	return EXIT_SUCCESS;

@@ -12,27 +12,27 @@ extern "C" {
 void vecnorm_gpu(
 	conjugrad_float_t *d_g,
 	conjugrad_float_t *d_res,
-	int nvar
+    unsigned long nvar
 );
 
 void vecdot_gpu(
 	conjugrad_float_t *d_x,
 	conjugrad_float_t *d_y,
 	conjugrad_float_t *d_res,
-	int nvar
+    unsigned long nvar
 );
 
 void initialize_s_gpu(
 	conjugrad_float_t *d_s,
 	conjugrad_float_t *d_g,
-	int nvar
+    unsigned long nvar
 );
 
 void update_s_gpu(
 	conjugrad_float_t *d_old_s,
 	conjugrad_float_t *d_g,
 	conjugrad_float_t beta,
-	int nvar
+    unsigned long nvar
 );
 
 void update_x_gpu(
@@ -40,7 +40,7 @@ void update_x_gpu(
 	conjugrad_float_t *d_s,
 	conjugrad_float_t alpha,
 	conjugrad_float_t prevalpha,
-	int nvar
+    unsigned long nvar
 );
 
 #ifdef __cplusplus

@@ -14,7 +14,7 @@ void swap(conjugrad_float_t **a, conjugrad_float_t **b) {
 }
 
 int conjugrad(
-	int n,
+	unsigned long n,
 	conjugrad_float_t *x,
 	conjugrad_float_t *fx,
 	conjugrad_evaluate_t proc_evaluate,
@@ -130,7 +130,7 @@ conjugrad_parameter_t *conjugrad_init() {
 }
 
 int linesearch(
-	int n,
+	unsigned long n,
 	conjugrad_float_t *x,
 	conjugrad_float_t *fx,
 	conjugrad_float_t *g,
@@ -180,7 +180,7 @@ int linesearch(
 
 
 
-conjugrad_float_t *conjugrad_malloc(int n) {
+conjugrad_float_t *conjugrad_malloc(size_t n) {
 	return vecalloc(n); 
 }
 

@@ -20,7 +20,7 @@ __device__ void warp_reduction(
 __global__ void sum_reduction(
 	conjugrad_float_t *d_in,
 	conjugrad_float_t *d_out,
-	int nvar
+    unsigned long nvar
 );
 
 #ifdef __cplusplus
